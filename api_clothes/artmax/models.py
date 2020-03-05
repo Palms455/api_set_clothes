@@ -17,7 +17,7 @@ class Item(models.Model):
 class ItemSet(models.Model):
 	name = models.CharField(max_length= 150, verbose_name='Наименование набора')
 	top = models.OneToOneField(Item, limit_choices_to={'type': 'top', 'ItemSet_top__isnull': True }, verbose_name='Верх', on_delete=models.CASCADE, related_name='ItemSet_top')
-	bottom = models.OneToOneField(Item, limit_choices_to={'type': 'bottom', 'ItemSet_bottom__isnull': 'True'}, verbose_name= 'Низ', on_delete=models.CASCADE, related_name='ItemSet_bottom')
+	bottom = models.OneToOneField(Item, limit_choices_to={'type': 'bottom', 'ItemSet_bottom__isnull': True}, verbose_name= 'Низ', on_delete=models.CASCADE, related_name='ItemSet_bottom')
 
 	class Meta:
 		verbose_name = 'Набор'

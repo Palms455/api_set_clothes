@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Item, ItemSet
+from django.db.models import Sum
 
 # Register your models here.
 class ItemAdmin(admin.ModelAdmin):
@@ -7,6 +8,8 @@ class ItemAdmin(admin.ModelAdmin):
 	list_display=('name', 'type', 'price')
 
 class ItemSetAdmin(admin.ModelAdmin):
+
+
 	list_display=('name', 'top', 'bottom')
 
 admin.site.register(Item, ItemAdmin)
