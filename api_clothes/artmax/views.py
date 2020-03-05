@@ -1,13 +1,22 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Item, ItemSet
-from .serializers import ItemSerializer, ItemSetSerializer
+from .models import Item, ItemSet, Products
+from .serializers import  ItemSerializer, ItemSetSerializer
 from django.db.models import Sum
+
 
 class ItemSetView(APIView):
 	def get(self, request):
-		items = Item.objects.filter(ItemSet_top__isnull=True).filter(ItemSet_bottom__isnull=True)
-		sets = ItemSet.objects.annotate(price=Sum('top__price') + Sum('bottom__price'))
-		serialize_item = ItemSerializer(items, many=True)
-		serialize_set_item = ItemSetSerializer(sets, many=True)
-		return Response(serialize_item.data + serialize_set_item.data)
+		prod = Products.objects\
+			.filter(item__ItemSet_top__isnull=True)\
+			.filter(item__ItemSet_bottom__isnull=True)
+		itemserial = []
+		sets_query = ItemSet.objects.annotate(price=Sum('top__price') + Sum('bottom__price'))
+		for i in prod:
+			if Item.objects.filter(name=i.name).exists():
+				item = Item.objects.get(name=i.name)
+				itemserial.append(ItemSerializer(item).data)
+			else:
+				sets = sets_query.get(name=i.name)
+				itemserial.append(ItemSetSerializer(sets).data)
+		return Response(itemserial)

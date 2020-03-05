@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Item, ItemSet
+from .models import Item, ItemSet, Products
 
 class ItemSerializer(serializers.ModelSerializer):
 
@@ -11,7 +11,7 @@ class ItemSerializer(serializers.ModelSerializer):
 class ItemSetSerializer(serializers.ModelSerializer):
 	top = serializers.CharField(source='top.name')
 	bottom = serializers.CharField(source='bottom.name')
-	price = serializers.CharField()
+	price = serializers.IntegerField()
 
 	class Meta:
 		model = ItemSet
