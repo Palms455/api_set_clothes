@@ -11,13 +11,13 @@ class ItemSetView(APIView):
 			.filter(ItemSet_bottom__isnull=True)\
 			.annotate(items_top= Value(0, IntegerField()),
 				items_bottom= Value(0, IntegerField()))
-			#.values('name', 'type', 'price', 'items_top', 'items_bottom')
+		
 
 		sets = ItemSet.objects.all().only('name')\
 			.annotate(type = Value('0', CharField()),
 			 	price = F('top__price') + F('bottom__price'),
 			 	items_top=F('top'), items_bottom=F('bottom'))
-			#.values('name', 'type', 'price', 'items_top', 'items_bottom')
+			
 
 		all_product = sets.union(item)
 		serialize_all_item = ItemSetSerializer(all_product, many=True)
